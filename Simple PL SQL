@@ -1,0 +1,52 @@
+#//Add to static input numbers
+
+SQL> declare
+  2  a integer :=10;
+  3   b integer :=20;
+  4   c integer;
+  5   Begin
+  6  c:=a+b;
+  7  dbms_output.put_line('The Sum is :'||c);
+  8  end;
+  9  /
+The Sum is :30
+PL/SQL procedure successfully completed.
+
+
+
+
+
+#//Sum and Average of two dynamic input numbers
+
+SQL> declare
+  2  a integer :=&a;
+  3   b integer :=&b;
+  4   c integer;
+  5  d integer;
+  6   Begin
+  7  c:=a+b;
+  8   d:=c/2;
+  9  dbms_output.put_line(c);
+ 10  dbms_output.put_line(d);
+ 11  end;
+ 12  /
+Enter value for a: 10
+old   2: a integer :=&a;
+new   2: a integer :=10;
+Enter value for b: 20
+old   3:  b integer :=&b;
+new   3:  b integer :=20;
+30
+15
+PL/SQL procedure successfully completed.
+
+
+
+
+
+
+
+
+
+
+
