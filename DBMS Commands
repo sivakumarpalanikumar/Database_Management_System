@@ -1,0 +1,750 @@
+//There are four commands in DBMS . THey are DDL, DCL, TCL and DML commands
+//DDL Commands: Create, alter, Rename, Drop, Truncate, Describe
+//DML Commands: Insert, Select, Update, Delete
+//DCL Commands: Grant and Revoke
+//TCL Commands: Commit, Savepoint, Rollback
+
+//I have explored some commands which I have shared in this folder and few in other folders.
+
+
+
+
+
+
+
+
+
+SQL*Plus: Release 10.2.0.3.0 - Production on Sun Feb 2 15:40:02 2020
+
+Copyright (c) 1982, 2006, Oracle.  All Rights Reserved.
+
+
+Connected to:
+Oracle Database 10g Enterprise Edition Release 10.2.0.3.0 - Production
+With the Partitioning, OLAP and Data Mining options
+
+
+
+#//DML(Data Manipulation Language)
+//1.Insert some values command
+
+SQL> create table meddii (sno int,name varchar(10),rate int);
+
+Table created.
+
+SQL> insert into medd values(&sno,&name,&rate);
+Enter value for sno: 1
+Enter value for name: okacet
+Enter value for rate: 3
+old   1: insert into med values(&sno,&name,&rate)
+new   1: insert into med values(1,okacet,3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#//TCL Command (Transaction Control Language)
+
+
+//1.Savepoint command
+
+SQL> create table medd (sno int,name varchar(10),rate int);
+
+Table created.
+
+SQL> insert into medd values(&sno,&name,&rate);
+Enter value for sno: 1
+Enter value for name: 'suproflux'
+Enter value for rate: 7
+old   1: insert into medd values(&sno,&name,&rate)
+new   1: insert into medd values(1,'suproflux',7)
+
+1 row created.
+
+SQL> /
+Enter value for sno: 2
+Enter value for name: 'metofux'
+Enter value for rate: 5
+old   1: insert into medd values(&sno,&name,&rate)
+new   1: insert into medd values(2,'metofux',5)
+
+1 row created.
+
+SQL> select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+
+SQL> savepoint s2;
+
+Savepoint created.
+
+SQL> insert into medd values(&sno,&name,&rate);
+Enter value for sno: 4
+Enter value for name: 'poatricole'
+Enter value for rate: 3
+old   1: insert into medd values(&sno,&name,&rate)
+new   1: insert into medd values(4,'poatricole',3)
+
+1 row created.
+
+SQL>  select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+         4 poatricole          3
+
+SQL> savepoint s3;
+
+Savepoint created.
+
+SQL>  insert into medd values(&sno,&name,&rate);
+Enter value for sno: 3
+Enter value for name: 'corotin'
+Enter value for rate: 8
+old   1:  insert into medd values(&sno,&name,&rate)
+new   1:  insert into medd values(3,'corotin',8)
+
+1 row created.
+
+SQL>  select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+         4 poatricole          3
+         3 corotin             8
+
+
+//Rollback command
+SQL> rollback to s3;
+
+Rollback complete.
+
+SQL>  select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+         4 poatricole          3
+
+SQL> rollback to s2;
+
+Rollback complete.
+
+SQL>  select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+
+
+
+
+
+SQL> create table meddi (sno int,name varchar(10),rate int default 0);
+
+Table created.
+
+SQL> insert into medd values(&sno,&name);
+Enter value for sno: 1
+Enter value for name: 'fungizole'
+old   1: insert into medd values(&sno,&name)
+new   1: insert into medd values(1,'fungizole')
+
+
+
+SQL> select * from meddi;
+
+no rows selected
+
+SQL> insert into meddi(sno) values(1);
+
+1 row created.
+
+SQL> insert into meddi(name) values('fungizole');
+
+1 row created.
+
+SQL> select * from meddi;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1                     0
+           fungizole           0
+
+SQL> create table meddii (sno int,name varchar(10),rate int);
+
+Table created.
+
+
+SQL> alter table meddii modify (sno int default 0);
+
+Table altered.
+
+SQL> insert into meddii(name) values('optiomega');
+
+1 row created.
+
+SQL> select * from meddi;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1                     0
+           fungizole           0
+
+SQL> create table medicaring(sno int not null,name varchar(10));
+
+Table created.
+
+SQL> alter table medicare add(price int default 0);
+
+Table altered.
+
+
+
+
+
+
+
+
+
+
+
+SQL> create table meddi (sno int,name varchar(10),rate int default 0);
+
+Table created.
+
+SQL> insert into medd values(&sno,&name);
+Enter value for sno: 1
+Enter value for name: 'suproflux'
+Enter value for rate: 7
+old   1: insert into medd values(&sno,&name,&rate)
+new   1: insert into medd values(1,'suproflux',7)
+
+1 row created.
+
+SQL> /
+Enter value for sno: 2
+Enter value for name: 'metofux'
+Enter value for rate: 5
+old   1: insert into medd values(&sno,&name,&rate)
+new   1: insert into medd values(2,'metofux',5)
+
+1 row created.
+
+SQL> select * from meddi;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+
+SQL> savepoint s2;
+
+Savepoint created.
+
+SQL> insert into medd values(&sno,&name,&rate);
+Enter value for sno: 4
+Enter value for name: 'poatricole'
+Enter value for rate: 3
+old   1: insert into medd values(&sno,&name,&rate)
+new   1: insert into medd values(4,'poatricole',3)
+
+1 row created.
+
+SQL>  select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+         4 poatricole          3
+
+SQL> savepoint s3;
+
+
+SQL> /
+Enter value for sno: 2
+Enter value for name: 'mozambil'
+Enter value for rate: 4
+old   1: insert into med values(&sno,&name,&rate)
+new   1: insert into med values(2,'mozambil',4)
+
+1 row created.
+
+SQL> select * from med where(sno=2);
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         2 mozambil            4
+
+
+
+
+
+
+
+
+
+
+
+alter table medicaring modify name varchar(10) not null;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SQL> create table meddi (sno int,name varchar(10),rate int default 0);
+
+Table created.
+
+SQL> insert into medd values(&sno,&name);
+Enter value for sno: 1
+Enter value for name: 'fungizole'
+old   1: insert into medd values(&sno,&name)
+new   1: insert into medd values(1,'fungizole')
+
+
+SQL> select * from meddi;
+
+no rows selected
+
+SQL> insert into meddi(sno) values(1);
+
+1 row created.
+
+SQL> insert into meddi(name) values('fungizole');
+
+1 row created.
+
+SQL> select * from meddi;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1                     0
+           fungizole           0
+
+SQL> create table meddii (sno int,name varchar(10),rate int);
+
+Table created.
+
+
+
+
+SQL> alter table meddii modify (sno int default 0);
+
+Table altered.
+
+SQL> insert into meddii(name) values('optiomega');
+
+1 row created.
+
+SQL> select * from meddi;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1                     0
+           fungizole           0
+
+SQL> create table medicare(sno int,name varchar(10));
+
+Table created.
+
+SQL> alter table medicare add(price int default 0);
+
+Table altered.
+
+SQL> insert into medicare(name) values('codliver');
+
+1 row created.
+
+SQL> insert into medicare(sno) values(2);
+
+1 row created.
+
+SQL> select * from medicare;
+
+       SNO NAME            PRICE
+---------- ---------- ----------
+           codliver            0
+         2                     0
+
+SQL> create table medicaring(sno int not null,name varchar(10));
+
+Table created.
+
+SQL> desc medicaring;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                       NOT NULL NUMBER(38)
+ NAME                                               VARCHAR2(10)
+
+
+
+
+
+
+
+SQL> alter table medicaring modify name varchar(10) not null;
+
+Table altered.
+
+SQL> desc medicaring;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                       NOT NULL NUMBER(38)
+ NAME                                      NOT NULL VARCHAR2(10)
+
+SQL>
+
+
+
+SQL> create table medicaring(sno int not null,name varchar(10));
+
+Table created.
+
+SQL> desc medicaring;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                       NOT NULL NUMBER(38)
+ NAME                                               VARCHAR2(10)
+
+
+
+
+SQL> alter table medicaring modify name varchar(10) not null;
+
+Table altered.
+
+SQL> desc medicaring;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                       NOT NULL NUMBER(38)
+ NAME                                      NOT NULL VARCHAR2(10)
+
+SQL>
+SQL>
+SQL> create table pharm (sno int,name varchar(10) constraint notpossible not null);
+
+Table created.
+
+SQL> desc pharm;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                                NUMBER(38)
+ NAME                                      NOT NULL VARCHAR2(10)
+
+SQL> insert into pharm values(1,'cardioil');
+
+1 row created.
+
+SQL> select * from pharm;
+
+       SNO NAME
+---------- ----------
+         1 cardioil
+
+
+
+SQL> alter table pharm modify sno int constraint itswrong not null;
+
+Table altered.
+
+SQL> desc pharm;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                       NOT NULL NUMBER(38)
+ NAME                                      NOT NULL VARCHAR2(10)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SQL> create table medd (sno int,name varchar(10),rate int);
+
+Table created.
+
+SQL> insert into medd values(&sno,&name,&rate);
+Enter value for sno: 1
+Enter value for name: 'suproflux'
+Enter value for rate: 7
+old   1: insert into medd values(&sno,&name,&rate)
+new   1: insert into medd values(1,'suproflux',7)
+
+1 row created.
+
+SQL> /
+Enter value for sno: 2
+Enter value for name: 'metofux'
+Enter value for rate: 5
+old   1: insert into medd values(&sno,&name,&rate)
+new   1: insert into medd values(2,'metofux',5)
+
+1 row created.
+
+SQL> select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+
+SQL> savepoint s2;
+
+Savepoint created.
+
+SQL> insert into medd values(&sno,&name,&rate);
+Enter value for sno: 4
+Enter value for name: 'poatricole'
+Enter value for rate: 3
+old   1: insert into medd values(&sno,&name,&rate)
+new   1: insert into medd values(4,'poatricole',3)
+
+1 row created.
+
+SQL>  select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+         4 poatricole          3
+
+
+//Nested Savepoint
+SQL> savepoint s3;
+
+Savepoint created.
+
+SQL>  insert into medd values(&sno,&name,&rate);
+Enter value for sno: 3
+Enter value for name: 'corotin'
+Enter value for rate: 8
+old   1:  insert into medd values(&sno,&name,&rate)
+new   1:  insert into medd values(3,'corotin',8)
+
+1 row created.
+
+SQL>  select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+         4 poatricole          3
+         3 corotin             8
+
+
+//Nested Rollback
+SQL> rollback to s3;
+
+Rollback complete.
+
+SQL>  select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+         4 poatricole          3
+
+SQL> rollback to s2;
+
+Rollback complete.
+
+SQL>  select * from medd;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1 suproflux           7
+         2 metofux             5
+
+
+
+
+
+SQL> create table meddi (sno int,name varchar(10),rate int default 0);
+
+Table created.
+
+SQL> insert into medd values(&sno,&name);
+Enter value for sno: 1
+Enter value for name: 'fungizole'
+old   1: insert into medd values(&sno,&name)
+new   1: insert into medd values(1,'fungizole')
+
+SQL> select * from meddi;
+
+no rows selected
+
+SQL> insert into meddi(sno) values(1);
+
+1 row created.
+
+SQL> insert into meddi(name) values('fungizole');
+
+1 row created.
+
+SQL> select * from meddi;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1                     0
+           fungizole           0
+
+SQL> create table meddii (sno int,name varchar(10),rate int);
+
+Table created.
+
+
+
+SQL> alter table meddii modify (sno int default 0);
+
+Table altered.
+
+SQL> insert into meddii(name) values('optiomega');
+
+1 row created.
+
+SQL> select * from meddi;
+
+       SNO NAME             RATE
+---------- ---------- ----------
+         1                     0
+           fungizole           0
+
+SQL> create table medicare(sno int,name varchar(10));
+
+Table created.
+
+SQL> alter table medicare add(price int default 0);
+
+Table altered.
+
+SQL> insert into medicare(name) values('codliver');
+
+1 row created.
+
+SQL> insert into medicare(sno) values(2);
+
+1 row created.
+
+SQL> select * from medicare;
+
+       SNO NAME            PRICE
+---------- ---------- ----------
+           codliver            0
+         2                     0
+
+SQL> create table medicaring(sno int not null,name varchar(10));
+
+Table created.
+
+SQL> desc medicaring;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                       NOT NULL NUMBER(38)
+ NAME                                               VARCHAR2(10)
+
+
+
+
+
+#//DDL Commands(Data Definition language)
+
+
+
+//1.Alter command
+
+SQL> alter table medicaring modify name varchar(10) not null;
+
+Table altered.
+
+
+//2.Describe Command
+
+SQL> desc medicaring;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                       NOT NULL NUMBER(38)
+ NAME                                      NOT NULL VARCHAR2(10)
+
+
+SQL> create table pharm (sno int,name varchar(10) constraint notpossible not null);
+
+Table created.
+
+SQL> desc pharm;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                                NUMBER(38)
+ NAME                                      NOT NULL VARCHAR2(10)
+
+SQL> insert into pharm values(1,'cardioil');
+
+1 row created.
+
+SQL> select * from pharm;
+
+       SNO NAME
+---------- ----------
+         1 cardioil
+
+
+SQL> alter table pharm modify sno int constraint itswrong not null;
+
+Table altered.
+
+SQL> desc pharm;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                       NOT NULL NUMBER(38)
+ NAME                                      NOT NULL VARCHAR2(10)
+
+
+      *
+
+
+
