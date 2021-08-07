@@ -1,0 +1,338 @@
+#//CHECKLIST CONSTRAINT
+
+
+
+
+//Method 1: While creating
+
+SQL> create table Tabletss(S_no int,Tablet_name varchar(20),Price int check(price<2));
+
+Table created.
+
+SQL> insert into Tabletss values(&S_no,&Tablet_Name,&Price);
+Enter value for s_no: '008'
+Enter value for tablet_name: 'okg'
+Enter value for price: '1'
+old   1: insert into Tabletss values(&S_no,&Tablet_Name,&Price)
+new   1: insert into Tabletss values('008','okg','1')
+
+1 row created.
+
+SQL> /
+Enter value for s_no: '006'
+Enter value for tablet_name: 'old'
+Enter value for price: '67'
+old   1: insert into Tabletss values(&S_no,&Tablet_Name,&Price)
+new   1: insert into Tabletss values('006','old','67')
+insert into Tabletss values('006','old','67')
+*
+ERROR at line 1:
+ORA-02290: check constraint (18CSR190.SYS_C0026254) violated
+
+
+
+
+
+
+
+
+
+//Method 2: Creating Checklist with Condition
+
+SQL> create table Ointment(S_no int,Ointment_name varchar(20),Price int,CONSTRAINT CHK_P
+Price>0));
+
+Table created.
+
+SQL> insert into Ointment values(&S_no,&Ointment_name,&Price);
+Enter value for s_no: '009'
+Enter value for ointment_name: 'alovera'
+Enter value for price: '0'
+old   1: insert into Ointment values(&S_no,&Ointment_name,&Price)
+new   1: insert into Ointment values('009','alovera','0')
+insert into Ointment values('009','alovera','0')
+*
+ERROR at line 1:
+ORA-02290: check constraint (18CSR190.CHK_PRICE) violated
+
+
+
+
+
+
+
+
+//Method 3: Alter Checklist
+
+SQL> create table Cream(S_no int,Cream_name varchar(20),Price int);
+
+Table created.
+
+SQL> alter table Cream add check(Price>0);
+
+Table altered.
+
+SQL> insert into Cream values(&S_no,&Cream_name,&Price);
+Enter value for s_no: '005'
+Enter value for cream_name: 'sunscreen'
+Enter value for price: '0'
+old   1: insert into Cream values(&S_no,&Cream_name,&Price)
+new   1: insert into Cream values('005','sunscreen','0')
+insert into Cream values('005','sunscreen','0')
+*
+ERROR at line 1:
+ORA-02290: check constraint (18CSR190.SYS_C0026295) violated
+
+
+
+
+
+
+
+
+
+#//UNIQUE KEY CONSTRAINT
+
+
+
+
+//Method 1: WHILE CREATING:
+
+SQL> create table MMedical(P_id int unique,Medicine varchar(20),Price int,Exp_date date);
+Table created.
+SQL> /insert into MMedical values(&P_id,&Medicine,&Price,&Exp_date);
+Enter value for p_id: 1
+Enter value for medicine: 'okacet'
+Enter value for price: 2
+Enter value for exp_date: '04-Jul-2020'
+old   1: insert into MMedical values(&P_id,&Medicine,&Price,&Exp_date)
+new   1: insert into MMedical values(1,'okacet',2,'04-Jul-2020')
+1 row created.
+SQL> /
+Enter value for p_id: 1
+Enter value for medicine: 'calpol'
+Enter value for price: 1
+Enter value for exp_date: '09-AUG-2020'
+old   1: insert into MMedical values(&P_id,&Medicine,&Price,&Exp_date)
+new   1: insert into MMedical values(1,'calpol',1,'09-AUG-2020')
+insert into MMedical values(1,'calpol',1,'09-AUG-2020')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.SYS_C005618) violated
+
+
+
+
+
+
+
+
+//Method2: WHILE ALTER:
+
+SQL> alter table MMedical add review int unique;
+Table altered.
+SQL> insert into MMedical values(&P_id,&Medicine,&Price,&Exp_date,&review);
+Enter value for p_id: 2
+Enter value for medicine: 'zerone'
+Enter value for price: 45
+Enter value for exp_date: '09-Sep-20'
+Enter value for review: 5
+old   1: insert into MMedical values(&P_id,&Medicine,&Price,&Exp_date,&review)
+new   1: insert into MMedical values(2,'zerone',45,'09-Sep-20',5)
+1 row created.
+SQL> /
+Enter value for p_id: 3
+Enter value for medicine: 'derma'
+Enter value for price: 50
+Enter value for exp_date: '09-Jan-2021'
+Enter value for review: 5
+old   1: insert into MMedical values(&P_id,&Medicine,&Price,&Exp_date,&review)
+new   1: insert into MMedical values(3,'derma',50,'09-Jan-2021',5)
+insert into MMedical values(3,'derma',50,'09-Jan-2021',5)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.SYS_C005619) violated
+
+
+
+
+
+
+
+
+//Method 3: WHILE CREATING AT LAST:
+
+SQL> create table Tablett(S_no int,Tablet_name varchar(20),Price int,unique(S_no));
+Table created.
+SQL>insert into Tablett(&S_no,&Tablet_name,&Price);
+Enter value for s_no: 2
+Enter value for tablet_name: 'sde56'
+Enter value for price: 4
+old   1: insert into Tablett values(&S_no,&Tablet_name,&Price)
+new   1: insert into Tablett values(2,'sde56',4)
+1 row created.
+SQL> /
+Enter value for s_no: 2
+Enter value for tablet_name: 'ed0'
+Enter value for price: 2
+old   1: insert into Tablett values(&S_no,&Tablet_name,&Price)
+new   1: insert into Tablett values(2,'ed0',2)
+insert into Tablett values(2,'ed0',2)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.SYS_C005620) violated
+
+
+
+
+
+
+
+
+//Method 4: Unique key While altering
+
+SQL> create table ointmenttt(s_no int,expdate date);
+Table created.
+SQL> alter table ointmenttt add ratings int constraint wrong unique;
+Table altered.
+SQL> insert into ointmenttt values(&s_no,&expdate,&ratings);
+Enter value for s_no: 7
+Enter value for expdate: '06-Oct-00'
+Enter value for ratings: 8
+old   1: insert into ointmenttt values(&s_no,&expdate,&ratings)
+new   1: insert into ointmenttt values(7,'06-Oct-00',8)
+1 row created.
+SQL> /
+Enter value for s_no: 8
+Enter value for expdate: '09-nov-20'
+Enter value for ratings: 8
+old   1: insert into ointmenttt values(&s_no,&expdate,&ratings)
+new   1: insert into ointmenttt values(8,'09-nov-20',8)
+insert into ointmenttt values(8,'09-nov-20',8)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SCOTT.WRONG) violated
+
+
+
+
+
+
+
+
+
+
+
+#//FOREIGN KEY CONSTRAINT
+
+
+Method 1: While creating at last
+
+SQL> create table insulin(pro_id int primary key ,pro_name varchar(10));
+Table created.
+SQL> create table buyer(s_no int,pro_id int,foreign key(pro_id) references insulin(pro_id));
+
+Table created.
+
+SQL> insert into insulin values(8,'sucro');
+
+1 row created.
+
+SQL> insert into buyer values(9,9);
+insert into buyer values(9,9)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SCOTT.SYS_C005643) violated - parent key not
+found
+
+
+
+
+
+//Method 2: while inserting
+
+SQL> Create table sponge7(sno int primary key,name varchar(10),price int);
+
+Table created.
+
+SQL> Create table sponge8(sno int references sponge5(sno),name varchar(10),price int);
+
+Table created.
+
+SQL> insert into sponge7 values (1,'cotton',5);
+
+1 row created.
+
+SQL> insert into sponge8 values (1,'cotton',5);
+insert into sponge8 values (1,'cotton',5)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (18CSR190.SYS_C0027998) violated - parent key
+not found
+
+
+
+
+//Method 3:Foreign key while creating a last
+
+SQL> Create table sponge9(sno int ,name varchar(10),price int,foreign key(sno) references sponge7(sn
+o));
+
+Table created.
+
+SQL> insert into sponge9 values (1,'cotton',5);
+
+1 row created.
+
+
+SQL> Create table sponge10(sno int references sponge7(sno),name varchar(10),price int);
+
+Table created.
+
+
+SQL> insert into sponge10 values (2,'cotton',5);
+insert into sponge10 values (2,'cotton',5)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (18CSR190.SYS_C0028000) violated - parent key
+not found
+
+
+
+
+
+
+
+
+
+
+//Method:4 Alter Foreign Key
+
+SQL> Create table sponge12(sno int ,name varchar(10),price int);
+
+Table created.
+
+
+SQL> alter table sponge12 add foreign key(sno) references sponge7(sno);
+
+Table altered.
+
+
+SQL> insert into sponge12 values (2,'cotton',5);
+insert into sponge12 values (2,'cotton',5)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (18CSR190.SYS_C0028002) violated - parent key
+not found
+
+
+
+
+
+
+
+
+
+
+
+
